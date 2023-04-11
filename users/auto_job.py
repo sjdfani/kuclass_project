@@ -2,7 +2,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import pytz
 from datetime import datetime, timedelta
 from .models import EmailCode
-from crono_project.settings import env
+from kuclass_project.settings import env
 
 
 def expire_email_code():
