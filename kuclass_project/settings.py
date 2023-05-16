@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
-    'rest_framework_swagger',
+    'drf_yasg',
     'users.apps.UsersConfig',
     'todo.apps.TodoConfig',
 ]
@@ -149,6 +149,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DATETIME_FORMAT': '%s',
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
 SIMPLE_JWT = {
@@ -157,5 +158,23 @@ SIMPLE_JWT = {
 }
 
 
-Redis_object = redis.Redis(host='redis', port=6379, db=0, password=env(
-    'REDIS_PASSWORD'), decode_responses=True)
+# Celery settings
+CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672/'
+CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_TIMEZONE = 'UTC'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_TASK_SOFT_TIME_LIMIT = 30 * 60
+
+# RabbitMQ settings
+BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
+
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    }
+}
