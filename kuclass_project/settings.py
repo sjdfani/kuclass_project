@@ -173,8 +173,19 @@ BROKER_URL = 'amqp://guest:guest@rabbitmq:5672//'
 SWAGGER_SETTINGS = {
     'USE_SESSION_AUTH': False,
     'SECURITY_DEFINITIONS': {
-        'basic': {
-            'type': 'basic'
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
         }
-    }
+    },
+    'APIS': [
+        {
+            'name': 'Kuclass API',
+            'description': 'My API description',
+            'url': 'http://localhost:8000/',
+            'patterns': 'kuclass_project.urls',
+            'tokenUrl': '/api/token/',
+        }
+    ]
 }
