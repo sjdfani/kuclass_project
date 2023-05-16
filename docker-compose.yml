@@ -4,17 +4,17 @@ services:
   db:
     image: postgres:14-alpine
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydb
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 
   rabbitmq:
     image: rabbitmq:3.8-alpine
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
 
   web:
     build: .
@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "${APP_PORT}:8000"
     depends_on:
       - db
       - rabbitmq
