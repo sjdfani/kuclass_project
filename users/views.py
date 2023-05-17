@@ -8,9 +8,7 @@ from .utils import get_tokens_for_user
 from .serializers import (
     RegisterSerializer, LoginSerializer, UserSerializer, ForgotPasswordSerializer,
     VerifyForgotPasswordSerializer, ConfirmForgetPasswordSerializer, ChangePasswordSerializer,
-
 )
-import json
 
 
 class Register(CreateAPIView):
