@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import User, EmailCode
 from .utils import number_generator
 import uuid
+from .tasks import send_email_forgot_password
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -86,6 +87,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
         obj.unique_id = uuid.uuid4().hex
         obj.status = True
         obj.save()
+        send_email_forgot_password(code, user.email)
         return obj.unique_id
 
     def save(self, **kwargs):
