@@ -1,3 +1,10 @@
 from django.contrib import admin
+from .models import Major
 
-# Register your models here.
+
+class MajorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'grade', 'status')
+    list_filter = ('grade', 'status')
+
+
+admin.site.register(Major, MajorAdmin)
