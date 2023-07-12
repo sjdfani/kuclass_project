@@ -87,7 +87,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
         obj.unique_id = uuid.uuid4().hex
         obj.status = True
         obj.save()
-        send_email_forgot_password(code, user.email)
+        send_email_forgot_password.delay(code, user.email)
         return obj.unique_id
 
     def save(self, **kwargs):
