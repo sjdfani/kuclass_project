@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'users.apps.UsersConfig',
     'todo.apps.TodoConfig',
+    'major.apps.MajorConfig',
 ]
 
 MIDDLEWARE = [

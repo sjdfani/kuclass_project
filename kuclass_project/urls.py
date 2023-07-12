@@ -30,4 +30,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/users/', include('users.urls'), name='users'),
     path('api/v1/todo/', include('todo.urls'), name='todo'),
+    path('api/v1/major/', include('major.urls'), name='major'),
 ]
