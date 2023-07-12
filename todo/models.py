@@ -4,9 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class JobState(models.TextChoices):
-    DONE = ('Done', 'done')
-    FAILED = ('Failed', 'failed')
-    PENDING = ('Pending', 'pending')
+    DONE = ('done', 'Done')
+    FAILED = ('failed', 'Failed')
+    PENDING = ('pending', 'Pending')
 
 
 class Job(models.Model):
