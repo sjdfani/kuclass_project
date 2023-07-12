@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'todo.apps.TodoConfig',
     'major.apps.MajorConfig',
+    'lessons.apps.LessonsConfig',
 ]
 
 MIDDLEWARE = [
