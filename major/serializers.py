@@ -11,4 +11,4 @@ class MajorListSerializer(serializers.ModelSerializer):
 class MajorNameListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Major
-        fields = ('name',)
+        fields = ('name', 'grade')
