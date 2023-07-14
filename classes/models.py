@@ -20,7 +20,7 @@ class Class(models.Model):
     start_time = models.TimeField(verbose_name=_('Start time'))
     end_time = models.TimeField(verbose_name=_('End time'))
     date_of_day = models.DateField(verbose_name=_('Date'))
-    status = models.BooleanField(verbose_name=_('Status'))
+    status = models.BooleanField(verbose_name=_('Status'), default=True)
     repeat = models.CharField(
         max_length=9, choices=RepeatChoose.choices, verbose_name=_('Repeat'))
 
