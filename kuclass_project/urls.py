@@ -32,4 +32,5 @@ urlpatterns = [
     path('api/v1/todo/', include('todo.urls'), name='todo'),
     path('api/v1/major/', include('major.urls'), name='major'),
     path('api/v1/lessons/', include('lessons.urls'), name='lessons'),
+    path('api/v1/classes/', include('classes.urls'), name='classes'),
 ]

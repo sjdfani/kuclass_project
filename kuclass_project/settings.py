@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'todo.apps.TodoConfig',
     'major.apps.MajorConfig',
     'lessons.apps.LessonsConfig',
+    'classes.apps.ClassesConfig',
 ]
 
 MIDDLEWARE = [
