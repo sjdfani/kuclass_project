@@ -10,7 +10,7 @@ class Lesson(models.Model):
     master_name = models.CharField(
         max_length=80, verbose_name=_('Master name'))
     unit = models.IntegerField(_('Unit'), default=0)
-    status = models.BooleanField(_('Status'), default=False)
+    status = models.BooleanField(_('Status'), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
