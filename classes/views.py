@@ -21,7 +21,7 @@ class DeleteClass(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = DeleteClassSerializer(
-            request.data, context={'request': request}
+            data=request.data, context={'request': request}
         )
         if serializer.is_valid(raise_exception=True):
             message = serializer.save()
