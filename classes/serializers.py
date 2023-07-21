@@ -1,8 +1,9 @@
 from rest_framework import serializers
+from django.db.models import Q
 from .models import Class, RepeatChoose
-import uuid
 from datetime import timedelta
 from kuclass_project.settings import env
+import uuid
 
 
 class ClassSerializer(serializers.ModelSerializer):
@@ -57,3 +58,35 @@ class CreateClassSerializer(serializers.ModelSerializer):
                     repeat=validated_data['repeat'],
                 )
         return obj
+
+
+class DeleteClassSerializer(serializers.Serializer):
+    unique_id = serializers.CharField(max_length=50)
+    pk = serializers.IntegerField()
+    repeat = serializers.CharField(max_length=9)
+
+    def validate(self, attrs):
+        request = self.context['request']
+        lookup = Q(user=request.user) & Q(
+            pk=attrs['pk']) & Q(uuid=attrs['unique_id'])
+        if not Class.objects.filter(lookup).exists():
+            raise serializers.ValidationError(
+                'there is no class with your input information')
+        return attrs
+
+    def save(self, **kwargs):
+        message = dict()
+        user = self.context['request']
+        unique_id = self.validated_data['unique_id']
+        pk = self.validated_data['pk']
+        repeat = self.validated_data['repeat']
+        if repeat == RepeatChoose.ONE:
+            obj = Class.objects.get(user=user, pk=pk)
+            obj.delete()
+            message['delete'] = f'object with pk={pk} was deleted'
+        elif repeat == RepeatChoose.ALL_WEEKS:
+            items = Class.objects.filter(user=user, uuid=unique_id)
+            for i, obj in enumerate(items.iterator()):
+                message[f'delete-{i+1}'] = f'object with pk={obj.pk} was deleted'
+                obj.delete()
+        return message
