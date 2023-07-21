@@ -90,3 +90,51 @@ class DeleteClassSerializer(serializers.Serializer):
                 message[f'delete-{i+1}'] = f'object with pk={obj.pk} was deleted'
                 obj.delete()
         return message
+
+
+class UpdateClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Class
+        exclude = ('uuid', 'user', 'status', 'repeat')
+
+
+class UpdateMultiClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Class
+        exclude = ('uuid', 'user', 'status', 'repeat')
+
+    def validate(self, attrs):
+        request = self.context['request']
+        pk = self.context['pk']
+        if not Class.objects.filter(user=request.user, pk=pk).exists():
+            return serializers.ValidationError('there is no class with your information')
+        return attrs
+
+    def update(self, instance, validated_data, repeat: str):
+        if repeat == RepeatChoose.ONE:
+            instance.lesson = validated_data.get('lesson', instance.lesson)
+            instance.start_time = validated_data.get(
+                'start_time', instance.start_time)
+            instance.end_time = validated_data.get(
+                'end_time', instance.end_time)
+            instance.date_of_day = validated_data.get(
+                'date_of_day', instance.date_of_day)
+            instance.save()
+        else:
+            request = self.context['request']
+            items = Class.objects.filter(user=request.user, uuid=instance.uuid)
+            for obj in items.iterator():
+                obj.lesson = validated_data.get('lesson', obj.lesson)
+                obj.start_time = validated_data.get(
+                    'start_time', obj.start_time)
+                obj.end_time = validated_data.get(
+                    'end_time', obj.end_time)
+                obj.date_of_day = validated_data.get(
+                    'date_of_day', obj.date_of_day)
+                obj.save()
+        return instance
+
+    def save(self, pk: int, repeat: str, **kwargs):
+        request = self.context['request']
+        obj = Class.objects.get(user=request.user, pk=pk)
+        self.update(obj, self.validated_data, repeat)
