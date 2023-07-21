@@ -84,7 +84,7 @@ class DeleteClassSerializer(serializers.Serializer):
             obj = Class.objects.get(user=user, pk=pk)
             obj.delete()
             message['delete'] = f'object with pk={pk} was deleted'
-        elif repeat == RepeatChoose.ALL_WEEKS:
+        else:
             items = Class.objects.filter(user=user, uuid=unique_id)
             for i, obj in enumerate(items.iterator()):
                 message[f'delete-{i+1}'] = f'object with pk={obj.pk} was deleted'
