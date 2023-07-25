@@ -4,9 +4,12 @@ from .models import Class, RepeatChoose
 from datetime import timedelta
 from kuclass_project.settings import env
 import uuid
+from lessons.serializers import LessonSerializer
 
 
 class ClassSerializer(serializers.ModelSerializer):
+    lesson = LessonSerializer(read_only=True)
+
     class Meta:
         model = Class
         fields = '__all__'
