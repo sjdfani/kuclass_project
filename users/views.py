@@ -80,7 +80,7 @@ class ConfirmForgotPassword(APIView):
 
 
 class ChangePassword(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         serializer = ChangePasswordSerializer(
