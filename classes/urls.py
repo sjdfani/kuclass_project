@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     CreateClass, DeleteClass, RetrieveUpdateClass, UpdateMultiClass,
-    GetAllClassesByUser,
+    GetAllClassesByUser, GetClassesByUserWithDate,
 )
 
 app_name = 'classes'
@@ -14,4 +14,6 @@ urlpatterns = [
     path('multi-update/<int:pk>/details/<str:repeat>/',
          UpdateMultiClass.as_view(), name='update-multi-class'),
     path('get-classes/', GetAllClassesByUser.as_view(), name="get-classes"),
+    path('get-classes/from=<str:from>/to=<str:to>/',
+         GetClassesByUserWithDate.as_view(), name="get-classes-by-dates"),
 ]

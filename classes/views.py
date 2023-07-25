@@ -8,6 +8,7 @@ from .serializers import (
     CreateClassSerializer, DeleteClassSerializer, ClassSerializer,
     UpdateClassSerializer, UpdateMultiClassSerializer,
 )
+from django.db.models import Q
 
 
 class CreateClass(CreateAPIView):
@@ -60,3 +61,14 @@ class GetAllClassesByUser(ListAPIView):
 
     def get_queryset(self):
         return Class.objects.filter(user=self.request.user)
+
+
+class GetClassesByUserWithDate(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ClassSerializer
+
+    def get_queryset(self):
+        from_ = self.kwargs["from"]
+        to_ = self.kwargs["to"]
+        lookup = Q(date_of_day__gte=from_) & Q(date_of_day__lte=to_)
+        return Class.objects.filter(lookup)
