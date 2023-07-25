@@ -1,3 +1,10 @@
 from django.contrib import admin
+from .models import Lesson
 
-# Register your models here.
+
+class LessonAdmin(admin.ModelAdmin):
+    list_display = ('name', 'major', 'unit', 'status')
+    list_filter = ('status', 'major')
+
+
+admin.site.register(Lesson, LessonAdmin)
