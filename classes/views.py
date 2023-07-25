@@ -38,7 +38,7 @@ class RetrieveUpdateClass(RetrieveUpdateAPIView):
         return UpdateClassSerializer
 
     def get_queryset(self):
-        return Class.objects.filter(user=self.request.user)
+        return Class.objects.filter(user=self.request.user, status=True)
 
 
 class UpdateMultiClass(APIView):
@@ -60,7 +60,7 @@ class GetAllClassesByUser(ListAPIView):
     serializer_class = ClassSerializer
 
     def get_queryset(self):
-        return Class.objects.filter(user=self.request.user)
+        return Class.objects.filter(user=self.request.user, status=True)
 
 
 class GetClassesByUserWithDate(ListAPIView):
@@ -71,4 +71,4 @@ class GetClassesByUserWithDate(ListAPIView):
         from_ = self.kwargs["from"]
         to_ = self.kwargs["to"]
         lookup = Q(date_of_day__gte=from_) & Q(date_of_day__lte=to_)
-        return Class.objects.filter(lookup)
+        return Class.objects.filter(lookup, status=True)

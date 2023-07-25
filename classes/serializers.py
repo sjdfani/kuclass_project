@@ -72,7 +72,7 @@ class DeleteClassSerializer(serializers.Serializer):
         request = self.context['request']
         lookup = Q(user=request.user) & Q(
             pk=attrs['pk']) & Q(uuid=attrs['unique_id'])
-        if not Class.objects.filter(lookup).exists():
+        if not Class.objects.filter(lookup, status=True).exists():
             raise serializers.ValidationError(
                 'there is no class with your input information')
         return attrs
@@ -84,11 +84,12 @@ class DeleteClassSerializer(serializers.Serializer):
         pk = self.validated_data['pk']
         repeat = self.validated_data['repeat']
         if repeat == RepeatChoose.ONE:
-            obj = Class.objects.get(user=user, pk=pk)
+            obj = Class.objects.get(user=user, pk=pk, status=True)
             obj.delete()
             message['delete'] = f'object with pk={pk} was deleted'
         else:
-            items = Class.objects.filter(user=user, uuid=unique_id)
+            items = Class.objects.filter(
+                user=user, uuid=unique_id, status=True)
             for i, obj in enumerate(items.iterator()):
                 message[f'delete-{i+1}'] = f'object with pk={obj.pk} was deleted'
                 obj.delete()
@@ -109,7 +110,7 @@ class UpdateMultiClassSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         request = self.context['request']
         pk = self.context['pk']
-        if not Class.objects.filter(user=request.user, pk=pk).exists():
+        if not Class.objects.filter(user=request.user, pk=pk, status=True).exists():
             return serializers.ValidationError('there is no class with your information')
         return attrs
 
@@ -125,7 +126,8 @@ class UpdateMultiClassSerializer(serializers.ModelSerializer):
             instance.save()
         else:
             request = self.context['request']
-            items = Class.objects.filter(user=request.user, uuid=instance.uuid)
+            items = Class.objects.filter(
+                user=request.user, uuid=instance.uuid, status=True)
             for obj in items.iterator():
                 obj.lesson = validated_data.get('lesson', obj.lesson)
                 obj.start_time = validated_data.get(
@@ -139,5 +141,5 @@ class UpdateMultiClassSerializer(serializers.ModelSerializer):
 
     def save(self, pk: int, repeat: str, **kwargs):
         request = self.context['request']
-        obj = Class.objects.get(user=request.user, pk=pk)
+        obj = Class.objects.get(user=request.user, pk=pk, status=True)
         self.update(obj, self.validated_data, repeat)
